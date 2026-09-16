@@ -3,7 +3,7 @@ import styles from './TileGrid.module.css'
 
 interface TileGridProps {
   children: ReactNode
-  columns?: 2 | 3 | 4 | 5
+  columns?: 2 | 3 | 4 | 5 | 6
 }
 
 /** Responsive grid following Apple's 1068 / 833 / 734px breakpoints. */

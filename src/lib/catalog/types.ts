@@ -16,7 +16,13 @@ export interface StorageOption {
   delta: number
 }
 
-export type CategoryId = 'phones' | 'tablets' | 'computers' | 'gaming' | 'accessories'
+export type CategoryId =
+  | 'phones'
+  | 'tablets'
+  | 'computers'
+  | 'gaming'
+  | 'cameras'
+  | 'accessories'
 
 export interface Product {
   id: string

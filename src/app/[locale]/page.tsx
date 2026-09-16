@@ -100,7 +100,7 @@ export default async function HomePage({ params }: PageProps<'/[locale]'>) {
 
       <section className="container section">
         <SectionHeader title={t('nav_products')} subtitle={t('pr_sub')} />
-        <TileGrid columns={5}>
+        <TileGrid columns={6}>
           {categories.map((category) => (
             <Link
               key={category.id}
