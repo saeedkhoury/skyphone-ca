@@ -51,3 +51,7 @@ next-env.d.ts
 # Keep them in version control so a clean clone or deployment renders the
 # catalogue, hero carousel, and video row correctly. Asset-rights approval is
 # tracked in docs/owner-approval-and-launch.md before any public release.
+
+# Asset-pipeline scratch (downloaded originals before trimming)
+/tools/assets/.raw/
+/tools/assets/.dji/

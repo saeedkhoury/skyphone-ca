@@ -9,7 +9,6 @@ import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
 import { directionFor } from '@/lib/i18n/config'
 import { useReducedMotion } from '@/lib/hooks/useReducedMotion'
 import { useLocale } from '@/lib/i18n/LocaleContext'
-import { formatPriceFor } from '@/lib/format/currency'
 import { whatsappLink } from '@/lib/shop'
 import type { Product } from '@/lib/catalog/types'
 import { Button } from '../ui/Button'
@@ -43,6 +42,14 @@ export interface HeroSlide {
   ctas: readonly HeroCta[]
 }
 
+function primaryCta(slide: HeroSlide): HeroCta | undefined {
+  return slide.ctas[0]
+}
+
+function secondaryCta(slide: HeroSlide): HeroCta | undefined {
+  return slide.ctas[1]
+}
+
 export function HeroCarousel({ slides }: { slides: readonly HeroSlide[] }) {
   const { locale, t } = useLocale()
   const [isStopped, setIsStopped] = useState(false)
@@ -71,6 +78,10 @@ export function HeroCarousel({ slides }: { slides: readonly HeroSlide[] }) {
     () => carousel?.selectedScrollSnap() ?? 0,
     () => 0,
   )
+
+  /** A CTA is either an internal route or a prefilled WhatsApp message. */
+  const ctaHref = (cta: HeroCta) =>
+    cta.whatsappKey ? whatsappLink(t(cta.whatsappKey)) : (cta.href ?? '#')
 
   const clearRotation = useCallback(() => {
     window.clearTimeout(timer.current)
@@ -153,37 +164,6 @@ export function HeroCarousel({ slides }: { slides: readonly HeroSlide[] }) {
                   aria-label={`${sourceIndex + 1} / ${slides.length}`}
                   inert={!isActive || undefined}
                 >
-                  <div className={styles.copy}>
-                    <p className={styles.eyebrow}>{t(entry.badgeKey)}</p>
-                    {/* h2, not h1: this heading changes on a timer. */}
-                    <h2 className={styles.title}>{entry.title}</h2>
-                    <p className={styles.tag}>{t(entry.tagKey)}</p>
-                    {entry.noteKey && <p className={styles.note}>{t(entry.noteKey)}</p>}
-                    {entry.product && (
-                      <p className={styles.price}>
-                        {t('cat_from')} {formatPriceFor(locale, entry.product.price)}
-                      </p>
-                    )}
-
-                    <div className={styles.actions}>
-                      {entry.ctas.map((cta) => {
-                        const href = cta.whatsappKey
-                          ? whatsappLink(t(cta.whatsappKey))
-                          : (cta.href ?? '#')
-                        return (
-                          <Button key={cta.labelKey} href={href} variant={cta.variant}>
-                            {t(cta.labelKey)}
-                          </Button>
-                        )
-                      })}
-                      {entry.product && (
-                        <Link href={`/${locale}/product/${entry.product.slug}`}>
-                          {t('cta_details')}
-                        </Link>
-                      )}
-                    </div>
-                  </div>
-
                   <div className={styles.art}>
                     <div className={styles.artFrame}>
                       {/* A fill image is bounded by the visible art frame. This keeps
@@ -193,12 +173,49 @@ export function HeroCarousel({ slides }: { slides: readonly HeroSlide[] }) {
                         src={assetPath(entry.image)}
                         alt={entry.alt}
                         fill
-                        sizes="(max-width: 833px) calc(100vw - 64px), 40vw"
+                        sizes="(max-width: 833px) calc(100vw - 64px), 60vw"
                         className={styles.artImage}
                         preload={sourceIndex === 0}
                       />
                     </div>
+                    {entry.badgeKey && (
+                      <span className={styles.badge}>{t(entry.badgeKey)}</span>
+                    )}
                   </div>
+
+                  {/* Apple's caption is one line under the artwork: the call to
+                      action, the headline in bold, then the supporting sentence
+                      after a separator dot. */}
+                  <div className={styles.caption}>
+                    {primaryCta(entry) && (
+                      <Button
+                        href={ctaHref(primaryCta(entry)!)}
+                        variant="quiet"
+                        className={styles.captionCta}
+                      >
+                        {t(primaryCta(entry)!.labelKey)}
+                      </Button>
+                    )}
+
+                    <div className={styles.captionText}>
+                      {/* h2, not h1: this heading changes on a timer. */}
+                      <h2 className={styles.title}>{entry.title}</h2>
+                      <span className={styles.separator} aria-hidden="true">
+                        •
+                      </span>
+                      <span className={styles.tag}>{t(entry.tagKey)}</span>
+                    </div>
+
+                    {secondaryCta(entry) && (
+                      <Link
+                        className={styles.captionLink}
+                        href={ctaHref(secondaryCta(entry)!)}
+                      >
+                        {t(secondaryCta(entry)!.labelKey)}
+                      </Link>
+                    )}
+                  </div>
+
                 </article>
               </div>
             )

@@ -32,12 +32,12 @@
   display: grid;
   flex: 1;
   width: 100%;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(var(--space-5), 4vw, var(--space-7));
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 0;
   min-width: 0;
   min-height: clamp(472px, 42vw, 600px);
-  padding: clamp(var(--space-5), 4vw, 54px);
+  padding: clamp(var(--space-4), 2.4vw, var(--space-6));
   overflow: hidden;
   border: 1px solid var(--separator);
   border-radius: clamp(22px, 2.25vw, 32px);
@@ -58,65 +58,86 @@
   transform: scale(1);
 }
 
-.copy {
+/* ---- Apple-style caption ---- */
+
+.caption {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-5) var(--space-5) 0;
+  text-align: center;
+}
+
+.captionCta {
+  flex: none;
+}
+
+/* Title, separator and supporting line sit on one row, as apple.com does. */
+.captionText {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0 var(--space-3);
   min-width: 0;
 }
 
-.eyebrow {
-  margin-bottom: var(--space-3);
-  color: var(--fill-orange);
-  font-size: var(--fs-14);
+.separator {
+  color: var(--text-secondary);
+}
+
+.captionLink {
+  font-size: var(--fs-17);
+  white-space: nowrap;
+}
+
+.badge {
+  position: absolute;
+  top: var(--space-4);
+  inset-inline-start: var(--space-4);
+  z-index: 2;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: var(--fs-12);
   font-weight: 600;
   letter-spacing: var(--tracking-caption);
 }
 
 .title {
-  margin-bottom: var(--space-4);
+  margin: 0;
   color: var(--text-primary);
-  font-size: clamp(var(--fs-40), 4.15vw, var(--fs-56));
+  font-size: var(--fs-21);
   font-weight: 600;
-  letter-spacing: var(--tracking-display);
-  line-height: var(--lh-display);
+  letter-spacing: var(--tracking-tight);
+  line-height: 1.3;
+  white-space: nowrap;
 }
 
 .tag {
-  max-width: 40ch;
-  margin-bottom: var(--space-2);
+  max-width: 52ch;
   color: var(--text-secondary);
   font-size: var(--fs-21);
   letter-spacing: var(--tracking-tight);
-}
-
-.note {
-  margin-bottom: var(--space-2);
-  color: var(--text-secondary);
-  font-size: var(--fs-17);
-}
-
-.price {
-  margin-bottom: var(--space-4);
-  font-size: var(--fs-19);
-  font-weight: 600;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-5);
-  flex-wrap: wrap;
+  line-height: 1.3;
 }
 
 /* Cut-out art stands on its own light ground, the way apple.com/il stages a
    hero. Every slide here uses a light ground, matching the shop's own site. */
 .art {
+  position: relative;
   display: grid;
-  align-self: center;
+  align-self: stretch;
   width: 100%;
   min-width: 0;
   min-height: 0;
-  aspect-ratio: 4 / 3;
   place-items: center;
-  padding: var(--space-4);
+  padding: var(--space-5);
   overflow: hidden;
   border-radius: calc(var(--radius-card) + var(--space-2));
   background: radial-gradient(65% 60% at 50% 45%, #ffffff, #e9e9ee);
@@ -138,6 +159,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Apple sits the pill and the play control close together, as one cluster. */
   gap: var(--space-3);
   margin-top: var(--space-5);
 }
@@ -146,42 +168,41 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   appearance: none;
-  border: 1px solid var(--separator);
+  border: 0;
   border-radius: 50%;
-  background-color: var(--bg-elevated);
+  /* Same tinted fill as the dot pill, so the two read as one control set. */
+  background-color: var(--carousel-control-bg);
   color: var(--text-primary);
-  transition:
-    background-color var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard);
+  transition: background-color var(--duration-fast) var(--ease-standard);
 }
 
 .playPause:hover {
-  border-color: var(--gray-quaternary);
-  background-color: var(--bg-quinary);
+  background-color: var(--carousel-control-bg-hover);
 }
 
+/* The dots live inside a tinted pill, the way apple.com groups them, rather
+   than floating loose on the page background. */
 .dots {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding-inline: var(--space-2);
-  border: 1px solid var(--separator);
+  gap: 2px;
+  padding-inline: 6px;
   border-radius: var(--radius-pill);
-  background-color: var(--bg-elevated);
+  background-color: var(--carousel-control-bg);
 }
 
 .dot {
-  /* Keep the small visual dot inside a finger-sized hit target. */
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  /* Narrower than a standalone 44px target because the pill itself adds the
+     surrounding hit area; height stays at 36px for comfortable tapping. */
+  width: 20px;
+  height: 36px;
   padding: 0;
   appearance: none;
   border: 0;
@@ -190,18 +211,23 @@
 
 .dot::before {
   content: '';
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: var(--radius-pill);
-  background-color: var(--gray-quaternary);
+  background-color: var(--carousel-dot);
   transition:
     background-color var(--duration-medium) var(--ease-standard),
-    width var(--duration-medium) var(--ease-standard);
+    width var(--duration-medium) var(--ease-standard),
+    border-radius var(--duration-medium) var(--ease-standard);
 }
 
 .dot[aria-current='true']::before {
   width: 28px;
-  background-color: var(--text-primary);
+  background-color: var(--carousel-dot-active);
+}
+
+.dot:hover::before {
+  background-color: var(--carousel-dot-active);
 }
 
 @media (max-width: 833px) {
@@ -248,6 +274,20 @@
   }
 
   .controls {
+    gap: var(--space-3);
     margin-top: var(--space-4);
+  }
+
+  .dots {
+    gap: var(--space-1);
+  }
+
+  .dot::before {
+    width: 7px;
+    height: 7px;
+  }
+
+  .dot[aria-current='true']::before {
+    width: 24px;
   }
 }

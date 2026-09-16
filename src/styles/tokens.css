@@ -106,6 +106,13 @@
   /* Catalogue photography is shot on white. On the dark theme it needs its own
      light plate, or every product sits in a glowing rectangle. */
   --photo-ground: #f3f3f5;
+
+  /* Carousel controls: a tinted pill holding the dots, plus a matching play
+     button — the grouping apple.com uses. */
+  --carousel-control-bg: rgba(255, 255, 255, 0.12);
+  --carousel-control-bg-hover: rgba(255, 255, 255, 0.2);
+  --carousel-dot: rgba(255, 255, 255, 0.35);
+  --carousel-dot-active: #f5f5f7;
 }
 
 :root[data-theme="light"] {
@@ -133,6 +140,11 @@
   --tile-gradient-start: #fff;
   --tile-gradient-end: #f5f5f7;
   --photo-ground: #fff;
+
+  --carousel-control-bg: rgba(0, 0, 0, 0.08);
+  --carousel-control-bg-hover: rgba(0, 0, 0, 0.14);
+  --carousel-dot: rgba(0, 0, 0, 0.32);
+  --carousel-dot-active: #1d1d1f;
 }
 
 /* Auto mode follows the OS when the user has not pinned a theme. */
@@ -162,5 +174,10 @@
     --tile-gradient-start: #fff;
     --tile-gradient-end: #f5f5f7;
     --photo-ground: #fff;
+
+    --carousel-control-bg: rgba(0, 0, 0, 0.08);
+    --carousel-control-bg-hover: rgba(0, 0, 0, 0.14);
+    --carousel-dot: rgba(0, 0, 0, 0.32);
+    --carousel-dot-active: #1d1d1f;
   }
 }
