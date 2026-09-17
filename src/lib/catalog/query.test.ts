@@ -209,9 +209,9 @@ describe('consistent merchandising', () => {
     expect(new Set(positions).size).toBe(products.length)
   })
 
-  it('groups all phones before tablets, computers, gaming, and accessories', () => {
+  it('groups categories in browsing order, one contiguous block each', () => {
     const groups = products.map((product) => product.categoryId).filter((category, index, all) => index === 0 || all[index - 1] !== category)
-    expect(groups).toEqual(['phones', 'tablets', 'computers', 'gaming', 'accessories'])
+    expect(groups).toEqual(['phones', 'tablets', 'computers', 'gaming', 'cameras', 'accessories'])
   })
 
   it('keeps Apple generations newest first and Pro Max ahead of Pro and base', () => {
