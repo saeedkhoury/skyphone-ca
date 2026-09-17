@@ -239,9 +239,11 @@
   }
 
   .slide {
-    grid-template-columns: 1fr;
-    gap: var(--space-5);
-    min-height: 0;
+    /* The art row is minmax(0, 1fr), so it can only take space the card
+       actually has. min-height: 0 here - left over from the old two-column
+       layout - gave it none, collapsing the art to zero height and leaving the
+       hero imageless on every handset. Keep a real floor instead. */
+    min-height: clamp(520px, 132vw, 640px);
     padding: var(--space-5);
     text-align: center;
   }
@@ -265,12 +267,13 @@
   }
 
   .art {
-    order: -1;
     /* A minimum height together with the 4:3 ratio can make this grid item
        wider than its card on a narrow handset. Keep the art tied to the card
-       width so the image frame (and the PS5 within it) never gets clipped. */
+       width so the image frame (and the PS5 within it) never gets clipped; the
+       card's own min-height above is what gives this row its size. */
     width: 100%;
     min-height: 0;
+    padding: var(--space-4);
   }
 
   .controls {
