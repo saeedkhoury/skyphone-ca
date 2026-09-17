@@ -6,9 +6,10 @@ const allProducts = [
   ...iphones, ...samsungPhones, 'Xiaomi 14',
   'iPad Pro', 'iPad Air', 'iPad', 'Galaxy Tab S9',
   'MacBook Pro 14"', 'MacBook Air', 'Dell XPS 13',
-  'PlayStation 5', 'PS5 DualSense', 'Steam Deck', 'Gaming Headset Pro',
+  'PlayStation 5', 'PS5 DualSense', 'Steam Deck',
+  'DJI Osmo Pocket 3', 'DJI Osmo Action 5 Pro',
   'AirPods 4', 'Apple Watch Ultra 2', 'Apple Watch S9', 'AirPods Pro 2',
-  'Galaxy Watch7', 'Galaxy Buds3', 'Fast Charger 65W',
+  'Galaxy Watch7', 'Galaxy Buds3',
 ]
 
 for (const locale of ['en', 'he', 'ar']) {
@@ -35,7 +36,7 @@ for (const locale of ['en', 'he', 'ar']) {
       ...iphones.slice(0, 3), ...samsungPhones, 'PlayStation 5', 'PS5 DualSense',
     ])
     const phoneCategory = page.locator('main a[href$="/store/phones"], main a[href$="/store/phones/"]')
-    await expect(phoneCategory.locator('img')).toHaveAttribute('src', /iphone17promax-deepblue-1/)
+    await expect(phoneCategory.locator('img')).toHaveAttribute('src', /official\/iphone-17-pro-max-deep-blue/)
   })
 }
 

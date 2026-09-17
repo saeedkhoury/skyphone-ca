@@ -199,8 +199,8 @@
 .dot {
   display: grid;
   place-items: center;
-  /* Narrower than a standalone 44px target because the pill itself adds the
-     surrounding hit area; height stays at 36px for comfortable tapping. */
+  /* Compact on pointer devices, where the cursor is precise and the tight pill
+     matches the source design. Touch viewports widen this to 44px below. */
   width: 20px;
   height: 36px;
   padding: 0;
@@ -280,6 +280,14 @@
 
   .dots {
     gap: var(--space-1);
+  }
+
+  /* A finger is not a cursor: each control needs its own 44px target, or a tap
+     meant for one slide lands on its neighbour. The dot stays visually small -
+     only the button around it grows. */
+  .dot {
+    width: 44px;
+    height: 44px;
   }
 
   .dot::before {
