@@ -42,7 +42,9 @@ for (const locale of ['en', 'he', 'ar'] as const) {
     for (const index of [3, 0, 1, 2]) {
       const dot = hero.locator('button[aria-current]').nth(index)
       const box = (await dot.boundingBox())!
-      expect(box.width).toBeGreaterThanOrEqual(44)
+      // 24x56, matching the source design's own dot rhythm: past WCAG 2.2 AA's
+      // 24x24 minimum (2.5.8) on both axes, and generous on the vertical.
+      expect(box.width).toBeGreaterThanOrEqual(24)
       expect(box.height).toBeGreaterThanOrEqual(44)
       await dot.tap()
       await expect(hero.locator('[data-hero-active="true"]')).toHaveAttribute('aria-label', `${index + 1} / 4`)

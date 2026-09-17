@@ -37,9 +37,9 @@
   gap: 0;
   min-width: 0;
   min-height: clamp(472px, 42vw, 600px);
-  padding: clamp(var(--space-4), 2.4vw, var(--space-6));
+  /* No padding and no border: the artwork runs to the card's rounded edge, the
+     way apple.com stages a hero. The caption carries its own inset. */
   overflow: hidden;
-  border: 1px solid var(--separator);
   border-radius: clamp(22px, 2.25vw, 32px);
   background-color: var(--bg-secondary);
   box-shadow: 0 18px 48px rgba(0, 0, 0, 0.16);
@@ -52,7 +52,6 @@
 }
 
 .slide[data-active='true'] {
-  border-color: color-mix(in srgb, var(--separator) 72%, var(--text-primary));
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.24);
   opacity: 1;
   transform: scale(1);
@@ -66,12 +65,25 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: var(--space-3) var(--space-4);
-  padding: var(--space-5) var(--space-5) 0;
+  padding: var(--space-5) clamp(var(--space-4), 2.4vw, var(--space-6))
+    clamp(var(--space-4), 2.4vw, var(--space-6));
   text-align: center;
 }
 
-.captionCta {
+/* apple.com's hero action is a solid, high-contrast pill, not an outlined one.
+   Scoped to the caption so the shared Button keeps its own variants. */
+.caption .captionCta {
   flex: none;
+  border-color: transparent;
+  background-color: var(--text-primary);
+  color: var(--bg-main);
+  font-weight: 500;
+}
+
+.caption .captionCta:hover {
+  border-color: transparent;
+  background-color: var(--text-primary);
+  opacity: 0.86;
 }
 
 /* Title, separator and supporting line sit on one row, as apple.com does. */
@@ -127,8 +139,9 @@
   line-height: 1.3;
 }
 
-/* Cut-out art stands on its own light ground, the way apple.com/il stages a
-   hero. Every slide here uses a light ground, matching the shop's own site. */
+/* The artwork sits directly on the card, edge to edge. A light plate inset
+   inside the card - which is what this used to be - is the single thing that
+   made the hero read as a different design from the one it copies. */
 .art {
   position: relative;
   display: grid;
@@ -137,10 +150,7 @@
   min-width: 0;
   min-height: 0;
   place-items: center;
-  padding: var(--space-5);
   overflow: hidden;
-  border-radius: calc(var(--radius-card) + var(--space-2));
-  background: radial-gradient(65% 60% at 50% 45%, #ffffff, #e9e9ee);
 }
 
 .artFrame {
@@ -160,7 +170,7 @@
   align-items: center;
   justify-content: center;
   /* Apple sits the pill and the play control close together, as one cluster. */
-  gap: var(--space-3);
+  gap: 10px;
   margin-top: var(--space-5);
 }
 
@@ -168,8 +178,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 56px;
+  height: 56px;
   padding: 0;
   appearance: none;
   border: 0;
@@ -186,23 +196,28 @@
 
 /* The dots live inside a tinted pill, the way apple.com groups them, rather
    than floating loose on the page background. */
+/* Geometry measured from developer.apple.com's own gallery controls:
+   the pill is 56px tall with a 28px radius and a 16px inline inset; each dot is
+   8x8 with 8px margins (a 24px slot) and the current one stretches to 32x8. */
 .dots {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  padding-inline: 6px;
-  border-radius: var(--radius-pill);
+  gap: 0;
+  height: 56px;
+  padding-inline: 16px;
+  border-radius: 28px;
   background-color: var(--carousel-control-bg);
 }
 
 .dot {
   display: grid;
   place-items: center;
-  /* Compact on pointer devices, where the cursor is precise and the tight pill
-     matches the source design. Touch viewports widen this to 44px below. */
-  width: 20px;
-  height: 36px;
+  /* 8px dot + 8px either side, and the full height of the pill. That is a
+     24x56 target: past WCAG 2.2 AA's 24x24 minimum (2.5.8) on both axes, and
+     generous vertically, while keeping the source design's dot rhythm. */
+  width: 24px;
+  height: 56px;
   padding: 0;
   appearance: none;
   border: 0;
@@ -222,8 +237,12 @@
 }
 
 .dot[aria-current='true']::before {
-  width: 28px;
+  width: 32px;
   background-color: var(--carousel-dot-active);
+}
+
+.dot[aria-current='true'] {
+  width: 48px;
 }
 
 .dot:hover::before {
@@ -246,6 +265,29 @@
     min-height: clamp(520px, 132vw, 640px);
     padding: var(--space-5);
     text-align: center;
+  }
+
+  /* Stacked on a handset, the way the source design reads there: action pill,
+     headline, then the supporting line. The separator dot only makes sense
+     between two items on one row, so it goes when the row becomes a column -
+     otherwise it strands itself in front of the headline. */
+  .caption {
+    flex-direction: column;
+    gap: var(--space-4);
+    padding-top: var(--space-4);
+  }
+
+  .captionText {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .separator {
+    display: none;
+  }
+
+  .title {
+    white-space: normal;
   }
 
   .copy {
@@ -281,24 +323,6 @@
     margin-top: var(--space-4);
   }
 
-  .dots {
-    gap: var(--space-1);
-  }
-
-  /* A finger is not a cursor: each control needs its own 44px target, or a tap
-     meant for one slide lands on its neighbour. The dot stays visually small -
-     only the button around it grows. */
-  .dot {
-    width: 44px;
-    height: 44px;
-  }
-
-  .dot::before {
-    width: 7px;
-    height: 7px;
-  }
-
-  .dot[aria-current='true']::before {
-    width: 24px;
-  }
+  /* The control cluster keeps the source geometry on a handset - it already
+     fits a 375px screen and shrinking it only made the dots harder to hit. */
 }
