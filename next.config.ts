@@ -60,6 +60,17 @@ const nextConfig: NextConfig = {
   // The bottom-corner developer badge otherwise covers the floating contact
   // buttons during localhost mobile reviews. Runtime errors still surface.
   devIndicators: false,
+  /**
+   * This checkout lives under ~/Desktop, which is synced to iCloud Drive. iCloud
+   * has no ignore file, so it tries to upload every file Next writes into the
+   * build directory — tens of thousands of them. The FileProvider daemon then
+   * holds those files long enough that `next dev` blocks on I/O and never binds
+   * a port (alive at 0% CPU, empty log). Pointing the build dir outside the
+   * project breaks Turbopack's external module resolution, so instead keep it
+   * here and give it a name iCloud skips: anything ending in `.nosync`.
+   * Unset in CI, where the default `.next` is correct.
+   */
+  distDir: process.env.NEXT_DIST_DIR ?? '.next',
   ...(isStaticExport ? { output: 'export' as const, trailingSlash: true } : {}),
   basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? '',
   // This project is nested below another npm lockfile on the developer
