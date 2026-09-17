@@ -1,0 +1,132 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: clamp(var(--space-3), 3vw, var(--space-6));
+  /* Dim to focus: the page is still there, pushed back, not replaced. */
+  background-color: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  animation: fade var(--duration-medium) var(--ease-standard);
+}
+
+.dialog {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  width: min(100%, 1100px);
+  max-height: 100%;
+}
+
+.stage {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  /* The frame is what shrinks on a small screen; the image keeps its shape. */
+  flex: 1;
+}
+
+.image {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: min(78vh, 900px);
+  object-fit: contain;
+  animation: rise var(--duration-medium) var(--ease-standard);
+}
+
+.close {
+  position: absolute;
+  top: 0;
+  /* Logical: the close control sits in the corner the reader starts from. */
+  inset-inline-end: 0;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  appearance: none;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.close:hover {
+  background-color: rgba(255, 255, 255, 0.24);
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: 6px 10px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
+.nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  appearance: none;
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.nav:hover {
+  background-color: rgba(255, 255, 255, 0.18);
+}
+
+.counter {
+  min-width: 4ch;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: var(--fs-14);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+/* The glyph is drawn pointing right; both it and its mirror flip with the
+   document direction so "next" always points the way the language reads. */
+.chevron {
+  transform: scaleX(1);
+}
+
+.chevronBack {
+  transform: scaleX(-1);
+}
+
+:global([dir='rtl']) .chevron {
+  transform: scaleX(-1);
+}
+
+:global([dir='rtl']) .chevronBack {
+  transform: scaleX(1);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+/* Materialise rather than merely appear: the image arrives with the surface. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+}

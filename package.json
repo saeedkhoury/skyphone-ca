@@ -1,7 +1,7 @@
 {
   "name": "sky-phone-apple-selection",
   "version": "0.1.0",
-  "description": "Trilingual storefront preview for Sky Phone — Apple Selection.",
+  "description": "Trilingual storefront preview for Sky Phone \u2014 Apple Selection.",
   "private": true,
   "license": "UNLICENSED",
   "engines": {
@@ -43,5 +43,12 @@
     "jsdom": "^29.1.1",
     "typescript": "^5",
     "vitest": "^5.0.0"
-  }
+  },
+  "browserslist": [
+    "chrome >= 88",
+    "edge >= 88",
+    "firefox >= 103",
+    "safari >= 15.4",
+    "ios_saf >= 15.4"
+  ]
 }

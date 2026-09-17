@@ -707,3 +707,42 @@ test.describe('responsive', () => {
     })
   }
 })
+
+test.describe('image viewer', () => {
+  test('pressing a product photo opens it full size and closes again', async ({ page }) => {
+    await page.goto('en/product/galaxy-s25-ultra/')
+
+    const opener = page.getByRole('button', { name: 'Tap to enlarge' })
+    await expect(opener).toBeVisible()
+    await opener.click()
+
+    const viewer = page.getByRole('dialog', { name: 'Image viewer' })
+    await expect(viewer).toBeVisible()
+
+    // The point of the viewer is a bigger picture than the page showed.
+    const enlarged = viewer.locator('img')
+    const box = (await enlarged.boundingBox())!
+    expect(box.height).toBeGreaterThan(400)
+    await expect
+      .poll(() => enlarged.evaluate((i: HTMLImageElement) => i.naturalWidth))
+      .toBeGreaterThan(0)
+
+    await page.keyboard.press('Escape')
+    await expect(viewer).toBeHidden()
+    // Focus returns to the photo that opened it, not to the top of the page.
+    await expect(opener).toBeFocused()
+  })
+
+  test('the viewer steps through a multi-image gallery', async ({ page }) => {
+    await page.goto('en/product/galaxy-s25-ultra/')
+    await page.getByRole('button', { name: 'Tap to enlarge' }).click()
+
+    const viewer = page.getByRole('dialog', { name: 'Image viewer' })
+    await expect(viewer.getByText('1 / 2')).toBeVisible()
+    await viewer.getByRole('button', { name: 'Next' }).click()
+    await expect(viewer.getByText('2 / 2')).toBeVisible()
+    // Wrapping keeps the control usable at either end.
+    await viewer.getByRole('button', { name: 'Next' }).click()
+    await expect(viewer.getByText('1 / 2')).toBeVisible()
+  })
+})

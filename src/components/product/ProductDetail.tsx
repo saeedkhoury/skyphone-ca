@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { assetPath } from '@/lib/asset-path'
 import { useState } from 'react'
 import { Button } from '@/components/ui/Button'
+import { Lightbox } from '@/components/ui/Lightbox'
 import { useCart } from '@/lib/cart/CartContext'
 import { useLocale } from '@/lib/i18n/LocaleContext'
 import { formatPriceFor } from '@/lib/format/currency'
@@ -19,6 +20,7 @@ export function ProductDetail({ product }: { product: Product }) {
   const [storageLabel, setStorageLabel] = useState(product.storage?.[0]?.label)
   const [imageIndex, setImageIndex] = useState(0)
   const [justAdded, setJustAdded] = useState(false)
+  const [isZoomed, setIsZoomed] = useState(false)
 
   const colour = product.colors?.find((entry) => entry.name === colourName)
   // A colour with its own photography leads the gallery, followed by the
@@ -49,7 +51,14 @@ export function ProductDetail({ product }: { product: Product }) {
   return (
     <div className={`container ${styles.layout}`}>
       <div className={styles.gallery}>
-        <div className={styles.stage}>
+        {/* The whole stage is the control: on a phone the image is the thing
+            people press, not a separate zoom affordance beside it. */}
+        <button
+          type="button"
+          className={styles.stage}
+          aria-label={t('lb_hint')}
+          onClick={() => setIsZoomed(true)}
+        >
           <Image
             src={assetPath(activeImage)}
             alt={product.name}
@@ -59,7 +68,10 @@ export function ProductDetail({ product }: { product: Product }) {
             priority
             sizes="(max-width: 833px) 90vw, 520px"
           />
-        </div>
+          <span className={styles.zoomHint} aria-hidden="true">
+            {t('lb_hint')}
+          </span>
+        </button>
 
         {gallery.length > 1 && (
           <ul className={styles.thumbs}>
@@ -150,6 +162,16 @@ export function ProductDetail({ product }: { product: Product }) {
 
         <p className={styles.note}>{t('pdp_warranty_body')}</p>
       </div>
+
+      {isZoomed && (
+        <Lightbox
+          images={gallery}
+          index={Math.min(imageIndex, gallery.length - 1)}
+          alt={product.name}
+          onIndexChange={setImageIndex}
+          onClose={() => setIsZoomed(false)}
+        />
+      )}
     </div>
   )
 }

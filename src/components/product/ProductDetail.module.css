@@ -11,16 +11,58 @@
   top: calc(var(--nav-height) + var(--space-5));
 }
 
+/* The stage is a button: pressing the photo opens the full-size viewer. */
 .stage {
+  position: relative;
   aspect-ratio: 1 / 1;
   display: grid;
   place-items: center;
+  width: 100%;
   padding: var(--space-6);
+  appearance: none;
   border-radius: var(--radius-card);
   border: 1px solid var(--separator);
   background: var(--photo-ground);
   min-height: 0;
   overflow: hidden;
+  cursor: zoom-in;
+}
+
+/* Feedback on the press itself, not on release. */
+.stage:active .stageImage {
+  transform: scale(0.98);
+}
+
+.stageImage {
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.zoomHint {
+  position: absolute;
+  inset-block-end: var(--space-3);
+  inset-inline-end: var(--space-3);
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #fff;
+  font-size: var(--fs-12);
+  letter-spacing: var(--tracking-caption);
+  opacity: 0;
+  transition: opacity var(--duration-fast) var(--ease-standard);
+}
+
+.stage:hover .zoomHint,
+.stage:focus-visible .zoomHint {
+  opacity: 1;
+}
+
+/* Touch has no hover, so the affordance has to be visible from the start. */
+@media (hover: none) {
+  .zoomHint {
+    opacity: 1;
+  }
 }
 
 .stageImage {
