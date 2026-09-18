@@ -79,7 +79,7 @@ describe('respond — products', () => {
 
   it('suggests the newest iPhones first for a general product question', () => {
     expect(respond('iphone').products.map((product) => product.name)).toEqual([
-      'iPhone 17 Pro Max', 'iPhone 17 Pro', 'iPhone 17',
+      'iPhone 18 Pro Max', 'iPhone 18 Pro', 'iPhone 17 Pro Max',
     ])
     expect(respond('how much is iPhone 18 Pro').products[0].name).toBe('iPhone 18 Pro')
   })

@@ -466,7 +466,7 @@ const catalog: readonly Product[] = [
     },
   },
   {
-    id: "28",
+    id: "32",
     slug: "iphone-18-pro-max",
     name: "iPhone 18 Pro Max",
     categoryId: "phones",
@@ -486,7 +486,7 @@ const catalog: readonly Product[] = [
     },
   },
   {
-    id: "29",
+    id: "33",
     slug: "iphone-18-pro",
     name: "iPhone 18 Pro",
     categoryId: "phones",
