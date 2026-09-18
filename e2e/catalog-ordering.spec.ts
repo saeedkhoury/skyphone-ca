@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test'
 
-const iphones = ['iPhone 17 Pro Max', 'iPhone 17 Pro', 'iPhone 17', 'iPhone 15 Pro', 'iPhone 14']
-const samsungPhones = ['Galaxy S25 Ultra', 'Galaxy S25', 'Galaxy S24 Ultra']
+const iphones = ['iPhone 18 Pro Max', 'iPhone 18 Pro', 'iPhone 17 Pro Max', 'iPhone 17 Pro', 'iPhone 17']
+const samsungPhones = ['Galaxy S26 Ultra', 'Galaxy S26', 'Galaxy S25 Ultra', 'Galaxy S25']
 const allProducts = [
   ...iphones, ...samsungPhones, 'Xiaomi 14',
   'iPad Pro', 'iPad Air', 'iPad', 'Galaxy Tab S9',
@@ -33,10 +33,10 @@ for (const locale of ['en', 'he', 'ar']) {
   test(`homepage highlights and category artwork use the leading models in ${locale}`, async ({ page }) => {
     await page.goto(`${locale}/`)
     await expect(page.locator('main a[href*="/product/"] h3')).toHaveText([
-      ...iphones.slice(0, 3), ...samsungPhones, 'PlayStation 5', 'PS5 DualSense',
+      ...iphones.slice(0, 3), ...samsungPhones.slice(0, 3), 'PlayStation 5', 'PS5 DualSense',
     ])
     const phoneCategory = page.locator('main a[href$="/store/phones"], main a[href$="/store/phones/"]')
-    await expect(phoneCategory.locator('img')).toHaveAttribute('src', /official\/iphone-17-pro-max-deep-blue/)
+    await expect(phoneCategory.locator('img')).toHaveAttribute('src', /official\/iphone-18-pro-max-burgundy/)
   })
 }
 
@@ -45,14 +45,14 @@ test('desktop menus and full-page search share the same product order', async ({
   await page.goto('en/')
   await page.getByRole('button', { name: 'Phones', exact: true }).click()
   await expect(page.locator('#flyout-phones a[href*="/product/"]')).toHaveText([
-    ...iphones, ...samsungPhones,
+    ...iphones, ...samsungPhones.slice(0, 3),
   ])
   await page.goto('en/search/?q=iphone')
   await expect(page.locator('main h3')).toHaveText(iphones)
   await page.goto('en/search/?q=apple')
   await expect(page.locator('main h3').first()).toHaveText(iphones[0])
-  await page.goto('en/search/?q=iPhone%2014')
-  await expect(page.locator('main h3').first()).toHaveText('iPhone 14')
+  await page.goto('en/search/?q=iPhone%2017%20Pro%20Max')
+  await expect(page.locator('main h3').first()).toHaveText('iPhone 17 Pro Max')
 })
 
 for (const width of [390, 1440]) {
@@ -62,7 +62,7 @@ for (const width of [390, 1440]) {
     await page.getByRole('button', { name: 'Search products...', exact: true }).click()
     const dialog = page.getByRole('dialog')
     const resultNames = dialog.locator('a[href*="/product/"] span[class*="resultName"]')
-    await expect(resultNames).toHaveText([...iphones, ...samsungPhones])
+    await expect(resultNames).toHaveText([...iphones, ...samsungPhones.slice(0, 3)])
     await dialog.getByRole('searchbox').fill('iphone')
     await expect(resultNames).toHaveText(iphones)
     await dialog.getByRole('searchbox').fill('samsung')

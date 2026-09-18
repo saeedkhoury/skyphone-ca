@@ -81,7 +81,7 @@ describe('respond — products', () => {
     expect(respond('iphone').products.map((product) => product.name)).toEqual([
       'iPhone 17 Pro Max', 'iPhone 17 Pro', 'iPhone 17',
     ])
-    expect(respond('how much is iPhone 15 Pro').products[0].name).toBe('iPhone 15 Pro')
+    expect(respond('how much is iPhone 18 Pro').products[0].name).toBe('iPhone 18 Pro')
   })
 
   it('asks which product for a bare price question', () => {

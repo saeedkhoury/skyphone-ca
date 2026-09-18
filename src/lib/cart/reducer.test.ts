@@ -17,10 +17,10 @@ import type { CartState } from './types'
 const item = {
   productId: '1',
   variantId: 'natural-titanium-128gb',
-  name: 'iPhone 15 Pro',
+  name: 'iPhone 18 Pro',
   variantName: 'Natural Titanium · 128GB',
   unitPrice: 4290,
-  slug: 'iphone-15-pro',
+  slug: 'iphone-18-pro',
 }
 
 const otherVariant = {
@@ -32,7 +32,7 @@ const otherProduct = {
   ...item,
   productId: '2',
   variantId: 'titanium-black-256gb',
-  slug: 'galaxy-s24-ultra',
+  slug: 'galaxy-s26-ultra',
 }
 
 function addOnce(state: CartState = emptyCart, payload = item, quantity = 1): CartState {

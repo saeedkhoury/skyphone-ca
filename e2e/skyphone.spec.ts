@@ -71,7 +71,7 @@ test.describe('catalogue', () => {
   test('a category page lists its products', async ({ page }) => {
     await page.goto('/en/store/phones')
     await expect(page.getByRole('heading', { name: 'Phones', level: 1 })).toBeVisible()
-    await expect(page.getByRole('heading', { name: 'iPhone 15 Pro' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'iPhone 18 Pro', exact: true })).toBeVisible()
   })
 
   test('prices are shown in shekels, never dollars', async ({ page }) => {
@@ -82,17 +82,17 @@ test.describe('catalogue', () => {
   })
 
   test('a product page shows colours, storage and a shekel price', async ({ page }) => {
-    await page.goto('/en/product/iphone-15-pro')
-    await expect(page.getByRole('heading', { name: 'iPhone 15 Pro', level: 1 })).toBeVisible()
-    await expect(page.getByRole('button', { name: 'Natural Titanium' })).toBeVisible()
-    await expect(page.getByRole('button', { name: /128GB/ })).toBeVisible()
-    await expect(page.getByText('₪4,290').first()).toBeVisible()
+    await page.goto('/en/product/iphone-18-pro')
+    await expect(page.getByRole('heading', { name: 'iPhone 18 Pro', level: 1, exact: true })).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Burgundy' })).toBeVisible()
+    await expect(page.getByRole('button', { name: /256GB/ })).toBeVisible()
+    await expect(page.getByText('₪5,490').first()).toBeVisible()
   })
 
   test('choosing a storage option changes the price', async ({ page }) => {
-    await page.goto('/en/product/iphone-15-pro')
+    await page.goto('/en/product/iphone-18-pro')
     await page.getByRole('button', { name: /512GB/ }).click()
-    await expect(page.getByText('₪5,190').first()).toBeVisible()
+    await expect(page.getByText('₪5,940').first()).toBeVisible()
   })
 })
 
@@ -418,7 +418,7 @@ test.describe('tile grid consistency', () => {
 
     const layout = await page
       .locator('a')
-      .filter({ has: page.getByRole('heading', { name: 'Galaxy S25', level: 3, exact: true }) })
+      .filter({ has: page.getByRole('heading', { name: 'Galaxy S26', level: 3, exact: true }) })
       .evaluate((tile) => {
         const art = tile.querySelector('div[class*="art"]')
         const media = tile.querySelector('div[class*="media"]')
@@ -512,26 +512,26 @@ test.describe('navigation bar', () => {
 
 test.describe('bag', () => {
   test('adds a product and orders it over WhatsApp', async ({ page }) => {
-    await page.goto('/en/product/iphone-15-pro')
+    await page.goto('/en/product/iphone-18-pro')
     await page.getByRole('button', { name: 'Add to bag' }).click()
     await page.goto('/en/cart')
 
-    await expect(page.getByRole('heading', { name: 'iPhone 15 Pro' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'iPhone 18 Pro', exact: true })).toBeVisible()
 
     // The shop takes orders on WhatsApp and payment in store — there is
     // deliberately no card form to fake.
     // Scope to the summary: the footer carries a WhatsApp link too.
     const order = page.getByRole('link', { name: 'Send order on WhatsApp' })
     await expect(order).toHaveAttribute('href', /wa\.me\/972527223916/)
-    await expect(order).toHaveAttribute('href', /iPhone%2015%20Pro/)
+    await expect(order).toHaveAttribute('href', /iPhone%2018%20Pro/)
   })
 
   test('the bag survives a reload', async ({ page }) => {
-    await page.goto('/en/product/galaxy-s24-ultra')
+    await page.goto('/en/product/galaxy-s26-ultra')
     await page.getByRole('button', { name: 'Add to bag' }).click()
     await page.goto('/en/cart')
     await page.reload()
-    await expect(page.getByRole('heading', { name: 'Galaxy S24 Ultra' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Galaxy S26 Ultra' })).toBeVisible()
   })
 
   test('an empty bag invites you to browse', async ({ page }) => {

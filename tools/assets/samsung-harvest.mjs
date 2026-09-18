@@ -14,15 +14,8 @@ import { harvest } from './harvest.mjs'
 import { writeFile, mkdir } from 'node:fs/promises'
 
 const PRODUCTS = [
-  { slug: 'galaxy-s25-ultra', code: 'sm-s938', page: 'https://www.samsung.com/us/smartphones/galaxy-s25-ultra/buy/' },
-  { slug: 'galaxy-s25',       code: 'sm-s931', page: 'https://www.samsung.com/il/smartphones/galaxy-s25/buy/' },
-  { slug: 'galaxy-tab-s9',    code: 'sm-x71',  page: 'https://www.samsung.com/il/tablets/galaxy-tab-s9/buy/' },
-  { slug: 'galaxy-watch7',    code: 'sm-l30',  page: 'https://www.samsung.com/il/watches/galaxy-watch7/buy/' },
-  { slug: 'galaxy-buds3',     code: 'sm-r530', page: 'https://www.samsung.com/il/audio-sound/galaxy-buds/galaxy-buds3/buy/' },
-  // Galaxy S24 Ultra is deliberately absent: Samsung has delisted it on both
-  // samsung.com/us and samsung.com/il, and those pages now serve current-
-  // generation SKUs (s938/s942/s948) instead. There is no official render to
-  // harvest for it.
+  { slug: 'galaxy-s26-ultra', code: 'sm-s948', page: 'https://www.samsung.com/il/smartphones/galaxy-s26-ultra/buy/' },
+  { slug: 'galaxy-s26',       code: 'sm-s942', page: 'https://www.samsung.com/il/smartphones/galaxy-s26/buy/' },
 ]
 
 await mkdir('tools/assets/.raw', { recursive: true })

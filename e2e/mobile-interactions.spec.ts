@@ -26,12 +26,12 @@ for (const locale of ['en', 'he', 'ar'] as const) {
     await page.locator('#mobile-menu a').first().tap()
     await expect(page).toHaveURL(new RegExp(`/${locale}/store/phones/?$`))
     await page.locator('main a[href*="/product/"]').first().tap()
-    await expect(page).toHaveURL(new RegExp(`/${locale}/product/iphone-17-pro-max/?$`))
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('iPhone 17 Pro Max')
+    await expect(page).toHaveURL(new RegExp(`/${locale}/product/iphone-18-pro-max/?$`))
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('iPhone 18 Pro Max')
     await page.getByRole('button', { name: translate(locale, 'pdp_add'), exact: true }).tap()
     await expect(page.getByRole('status')).toContainText(translate(locale, 'added'))
     await page.locator('nav a[href*="/cart"]').tap()
-    await expect(page.getByRole('heading', { name: 'iPhone 17 Pro Max', exact: true })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'iPhone 18 Pro Max', exact: true })).toBeVisible()
   })
 
   test(`mobile hero controls and product CTA respond in ${locale}`, async ({ page }) => {
