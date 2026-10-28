@@ -185,6 +185,19 @@ export function GlobalFooter() {
         </div>
 
         <p className={styles.disclaimer}>{t('foot_tag')}</p>
+
+        <p className={styles.credit}>
+          <a
+            href="https://skova.dev"
+            target="_blank"
+            rel="noopener"
+            dir="ltr"
+            lang="en"
+            aria-label="Developed by SKOVA (opens in a new tab)"
+          >
+            Developed by ©SKOVA
+          </a>
+        </p>
       </div>
     </footer>
   )
